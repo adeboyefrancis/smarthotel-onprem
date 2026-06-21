@@ -48,8 +48,8 @@ parameters:
   - id: deployApps
     name: Deploy Stage 2 Apps
     description: Installs IIS sites, SQL database, and Nginx WAF config on top of the infra
-    type: boolean
-    default: true
+    type: string
+    default: "true"
     allowed:
       - "true"
       - "false"
