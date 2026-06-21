@@ -1,0 +1,12 @@
+# Force LF line endings for everything in this repo, regardless of OS.
+# Prevents Windows autocrlf from corrupting YAML manifests and shell scripts
+# (a CRLF shebang line breaks bash scripts outright on Linux VMs).
+
+* text=auto eol=lf
+
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.sh   text eol=lf
+*.bicep text eol=lf
+*.ps1  text eol=lf
+*.md   text eol=lf
