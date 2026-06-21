@@ -27,7 +27,11 @@ param standardVmSize string = 'Standard_B2s'
 param sqlVmSize string = 'Standard_B2ms'
 
 @description('Stage 2: deploy functional apps (IIS sites, SQL DB, Nginx WAF) on top of the infra')
-param deployApps bool = true
+@allowed([
+  'true'
+  'false'
+])
+param deployApps string = 'true'
 
 @description('Raw GitHub content base URL for this catalog folder, e.g. https://raw.githubusercontent.com/<you>/<repo>/main/SmartHotel-OnPrem-Sim/scripts - required if deployApps is true')
 param catalogRawBaseUrl string = ''
@@ -228,7 +232,7 @@ var sqlPrivateIp = nics[3].properties.ipConfigurations[0].properties.privateIPAd
 var web1PrivateIp = nics[1].properties.ipConfigurations[0].properties.privateIPAddress
 var web2PrivateIp = nics[2].properties.ipConfigurations[0].properties.privateIPAddress
 
-resource sqlSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' = if (deployApps) {
+resource sqlSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' = if (toLower(deployApps) == 'true') {
   parent: vms[3]
   name: 'sql-setup'
   location: location
@@ -247,8 +251,7 @@ resource sqlSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' =
     }
   }
 }
-
-resource webSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' = [for i in range(1, 2): if (deployApps) {
+resource webSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' = [for i in range(1, 2): if (toLower(deployApps) == 'true') {
   parent: vms[i]
   name: 'web-setup'
   location: location
@@ -271,7 +274,7 @@ resource webSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' =
   ]
 }]
 
-resource wafSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' = if (deployApps) {
+resource wafSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' = if (toLower(deployApps) == 'true') {
   parent: vms[0]
   name: 'waf-setup'
   location: location
@@ -301,4 +304,4 @@ output ubuntuWafPublicIp string = publicIps[0].properties.ipAddress
 output smartHotelWeb1PublicIp string = publicIps[1].properties.ipAddress
 output smartHotelWeb2PublicIp string = publicIps[2].properties.ipAddress
 output smartHotelSql1PublicIp string = publicIps[3].properties.ipAddress
-output appUrl string = deployApps ? 'http://${publicIps[0].properties.ipAddress}' : 'Stage 2 not deployed - set deployApps=true'
+output appUrl string = toLower(deployApps) == 'true' ? 'http://${publicIps[0].properties.ipAddress}' : 'Stage 2 not deployed - set deployApps=true'

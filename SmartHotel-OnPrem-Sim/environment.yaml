@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=https://github.com/Azure/deployment-environments/releases/download/2022-11-11-preview/manifest.schema.json
+
 name: SmartHotel-OnPrem-Simulation
 version: 1.0.0
 summary: Stage 1 - On-prem infra simulation (WAF + 2x Web + SQL)
@@ -6,8 +7,10 @@ description: >
   Provisions 4 VMs on a single VNet to simulate the SmartHotelHost Hyper-V
   topology: UbuntuWAF, SmartHotelWeb1, SmartHotelWeb2, SmartHotelSQL1.
   Mirrors Stage 1 of the SmartHotel360 on-prem-to-Azure migration scenario.
+
 runner: ARM
 templatePath: main.bicep
+
 parameters:
   - id: adminUsername
     name: Admin Username
@@ -20,6 +23,7 @@ parameters:
     description: Must be 12+ chars with 3 of upper/lower/digit/symbol
     type: string
     required: true
+    secret: true
 
   - id: allowedSourceIp
     name: Your Public IP (CIDR)
@@ -48,17 +52,21 @@ parameters:
   - id: deployApps
     name: Deploy Stage 2 Apps
     description: Installs IIS sites, SQL database, and Nginx WAF config on top of the infra
-    type: boolean
-    default: true
+    type: string
+    default: "true"
+    allowed:
+      - "true"
+      - "false"
 
   - id: catalogRawBaseUrl
     name: Catalog Scripts Base URL
     description: Raw GitHub URL to this folder's /scripts directory, e.g. https://raw.githubusercontent.com/<you>/<repo>/main/SmartHotel-OnPrem-Sim/scripts
     type: string
-    required: false
+    default: ""
 
   - id: sqlAppPassword
     name: SQL App Login Password
     description: Password for the smarthotelapp SQL login used by the web tier - required if Deploy Stage 2 Apps is on
     type: string
-    required: false
+    secret: true
+    default: ""
