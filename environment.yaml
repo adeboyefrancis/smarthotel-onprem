@@ -1,0 +1,68 @@
+name: SmartHotelOnPremSimulation
+version: 1.0.0
+summary: Stage 1 — On-prem infra simulation (WAF + 2x Web + SQL)
+description: >
+  Provisions 4 VMs on a single VNet to simulate the SmartHotelHost Hyper-V
+  topology: UbuntuWAF, SmartHotelWeb1, SmartHotelWeb2, SmartHotelSQL1.
+  Mirrors Stage 1 of the SmartHotel360 on-prem-to-Azure migration scenario.
+runner: Bicep
+templatePath: main.bicep
+
+parameters:
+  - id: adminUsername
+    name: Admin Username
+    description: Local administrator account for Windows VMs and sudo-enabled account for Linux VMs.
+    type: string
+    required: true
+
+  - id: adminPassword
+    name: Admin Password
+    description: Password for the VM administrator account. Must be at least 12 characters and meet complexity requirements.
+    type: string
+    required: true
+    secret: true
+
+  - id: allowedSourceIp
+    name: Allowed Source IP (CIDR)
+    description: Public IPv4 CIDR allowed to access RDP, SSH, and HTTP endpoints. Example- 86.123.45.67/32.
+    type: string
+    required: true
+
+  - id: standardVmSize
+    name: Web/WAF VM Size
+    description: VM size used for the WAF and web tier virtual machines.
+    type: string
+    default: Standard_B2s
+    allowed:
+      - Standard_B2s
+      - Standard_B2ms
+      - Standard_D2s_v5
+
+  - id: sqlVmSize
+    name: SQL VM Size
+    description: VM size used for the SQL Server virtual machine.
+    type: string
+    default: Standard_B2ms
+    allowed:
+      - Standard_B2ms
+      - Standard_D2s_v5
+      - Standard_D4s_v5
+
+  - id: deployApps
+    name: Deploy application components
+    description: Installs IIS applications, SQL database objects, and Nginx WAF configuration after infrastructure deployment.
+    type: boolean
+    default: true
+
+  - id: catalogRawBaseUrl
+    name: Scripts Base URL
+    description: Base URL used to download deployment scripts for application installation. Only override if using a fork or alternate script location.
+    type: string
+    required: false
+
+  - id: sqlAppPassword
+    name: SQL Application Password
+    description: Password for the smarthotelapp SQL login used by the web tier. Required when application deployment is enabled.
+    type: string
+    required: false
+    secret: true
