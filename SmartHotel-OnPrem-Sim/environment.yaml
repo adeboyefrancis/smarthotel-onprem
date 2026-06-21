@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://github.com/Azure/deployment-environments/releases/download/2022-11-11-preview/manifest.schema.json
 name: SmartHotel-OnPrem-Simulation
 version: 1.0.0
 summary: Stage 1 - On-prem infra simulation (WAF + 2x Web + SQL)
@@ -19,7 +20,6 @@ parameters:
     description: Must be 12+ chars with 3 of upper/lower/digit/symbol
     type: string
     required: true
-    secret: true
 
   - id: allowedSourceIp
     name: Your Public IP (CIDR)
@@ -62,4 +62,3 @@ parameters:
     description: Password for the smarthotelapp SQL login used by the web tier - required if Deploy Stage 2 Apps is on
     type: string
     required: false
-    secret: true
