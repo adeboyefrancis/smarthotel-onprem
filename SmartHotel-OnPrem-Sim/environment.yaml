@@ -1,6 +1,6 @@
 name: SmartHotel-OnPrem-Simulation
 version: 1.0.0
-summary: Stage 1 — On-prem infra simulation (WAF + 2x Web + SQL)
+summary: Stage 1 - On-prem infra simulation (WAF + 2x Web + SQL)
 description: >
   Provisions 4 VMs on a single VNet to simulate the SmartHotelHost Hyper-V
   topology: UbuntuWAF, SmartHotelWeb1, SmartHotelWeb2, SmartHotelSQL1.
@@ -23,7 +23,7 @@ parameters:
 
   - id: allowedSourceIp
     name: Your Public IP (CIDR)
-    description: e.g. 86.123.45.67/32 — find yours at whatismyip.com. Locks RDP/SSH/HTTP to just you.
+    description: e.g. 86.123.45.67/32 - find yours at whatismyip.com. Locks RDP/SSH/HTTP to just you.
     type: string
     required: true
 
@@ -59,7 +59,7 @@ parameters:
 
   - id: sqlAppPassword
     name: SQL App Login Password
-    description: Password for the smarthotelapp SQL login used by the web tier — required if Deploy Stage 2 Apps is on
+    description: Password for the smarthotelapp SQL login used by the web tier - required if Deploy Stage 2 Apps is on
     type: string
     required: false
     secret: true

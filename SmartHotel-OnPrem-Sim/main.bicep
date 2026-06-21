@@ -1,5 +1,5 @@
 // =========================================================
-// SmartHotel On-Premises Simulation — Stage 1
+// SmartHotel On-Premises Simulation - Stage 1
 // Simulates: SmartHotelHost (Hyper-V) running 4 guest VMs
 //   - UbuntuWAF        (Linux, web app firewall role)
 //   - SmartHotelWeb1   (Windows, web tier)
@@ -11,10 +11,10 @@
 param adminUsername string
 
 @secure()
-@description('Admin password — must meet Azure complexity rules (12+ chars, 3 of: upper/lower/digit/symbol)')
+@description('Admin password - must meet Azure complexity rules (12+ chars, 3 of: upper/lower/digit/symbol)')
 param adminPassword string
 
-@description('Your public IP in CIDR form, e.g. 86.123.45.67/32 — restricts RDP/SSH/HTTP access to just you')
+@description('Your public IP in CIDR form, e.g. 86.123.45.67/32 - restricts RDP/SSH/HTTP access to just you')
 param allowedSourceIp string
 
 @description('Azure region for all resources')
@@ -29,11 +29,11 @@ param sqlVmSize string = 'Standard_B2ms'
 @description('Stage 2: deploy functional apps (IIS sites, SQL DB, Nginx WAF) on top of the infra')
 param deployApps bool = true
 
-@description('Raw GitHub content base URL for this catalog folder, e.g. https://raw.githubusercontent.com/<you>/<repo>/main/SmartHotel-OnPrem-Sim/scripts — required if deployApps is true')
+@description('Raw GitHub content base URL for this catalog folder, e.g. https://raw.githubusercontent.com/<you>/<repo>/main/SmartHotel-OnPrem-Sim/scripts - required if deployApps is true')
 param catalogRawBaseUrl string = ''
 
 @secure()
-@description('Password for the SQL app login (smarthotelapp) used by the web tier connection string — required if deployApps is true')
+@description('Password for the SQL app login (smarthotelapp) used by the web tier connection string - required if deployApps is true')
 param sqlAppPassword string = ''
 
 // -------------------------------
@@ -222,7 +222,7 @@ resource vms 'Microsoft.Compute/virtualMachines@2023-09-01' = [for (vm, i) in vm
 }]
 
 // -------------------------------
-// Stage 2: Custom Script Extensions — turns the infra into a working app
+// Stage 2: Custom Script Extensions - turns the infra into a working app
 // -------------------------------
 var sqlPrivateIp = nics[3].properties.ipConfigurations[0].properties.privateIPAddress
 var web1PrivateIp = nics[1].properties.ipConfigurations[0].properties.privateIPAddress
@@ -295,10 +295,10 @@ resource wafSetupExt 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' =
 }
 
 // -------------------------------
-// Outputs — handy for ADE's "Outputs" tab
+// Outputs - handy for ADE's "Outputs" tab
 // -------------------------------
 output ubuntuWafPublicIp string = publicIps[0].properties.ipAddress
 output smartHotelWeb1PublicIp string = publicIps[1].properties.ipAddress
 output smartHotelWeb2PublicIp string = publicIps[2].properties.ipAddress
 output smartHotelSql1PublicIp string = publicIps[3].properties.ipAddress
-output appUrl string = deployApps ? 'http://${publicIps[0].properties.ipAddress}' : 'Stage 2 not deployed — set deployApps=true'
+output appUrl string = deployApps ? 'http://${publicIps[0].properties.ipAddress}' : 'Stage 2 not deployed - set deployApps=true'
