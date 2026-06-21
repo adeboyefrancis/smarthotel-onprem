@@ -13,12 +13,6 @@ templatePath: main.bicep
 
 parameters:
 
-  - id: location
-    name: Azure Region
-    description: Region where all resources will be deployed. Defaults to resource group location if not provided.
-    type: string
-    required: false
-
   - id: adminUsername
     name: Admin Username
     description: Local administrator account for Windows VMs and sudo-enabled account for Linux VMs.
@@ -34,13 +28,13 @@ parameters:
 
   - id: allowedSourceIp
     name: Allowed Source IP (CIDR)
-    description: Public IPv4 CIDR allowed to access RDP, SSH, and HTTP endpoints. Example 86.123.45.67/32
+    description: Public IPv4 CIDR allowed to access RDP, SSH, and HTTP endpoints. Example- 86.123.45.67/32
     type: string
     required: true
 
   - id: standardVmSize
     name: Web/WAF VM Size
-    description: VM size used for the web and WAF tier.
+    description: VM size used for web and WAF tier.
     type: string
     default: Standard_B2s
     allowed:
@@ -50,7 +44,7 @@ parameters:
 
   - id: sqlVmSize
     name: SQL VM Size
-    description: VM size used for the SQL Server tier.
+    description: VM size used for SQL Server tier.
     type: string
     default: Standard_B2ms
     allowed:
@@ -69,10 +63,12 @@ parameters:
     description: Base URL for deployment scripts. Only required if deployApps is enabled.
     type: string
     required: false
+    default: ""
 
   - id: sqlAppPassword
     name: SQL Application Password
-    description: Password for the smarthotelapp SQL login used by the web tier. Required only if deployApps is enabled.
+    description: Password for SQL application login. Required only if deployApps is enabled.
     type: string
     required: false
     secret: true
+    default: ""
