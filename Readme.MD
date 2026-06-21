@@ -1,8 +1,8 @@
-# Quest: Get SmartHotel-OnPrem-Sim Live in ADE
+# SmartHotel-OnPrem-Sim Infra deployment using ADE
 
 
 
-## ☐ Step 1 — Push to a repo
+##  Step 1 — Push to a repo
 ADE reads catalogs from a Git repo. Create a GitHub repo (e.g. `azure-ade-catalog`)
 and push this `SmartHotel-OnPrem-Sim/` folder to it (root level, or under a
 `/Environments/` folder — either works as long as the catalog path matches).
@@ -15,24 +15,24 @@ git remote add origin <your-repo-url>
 git push -u origin main
 ```
 
-## ☐ Step 2 — Create (or reuse) a Dev Center
+##  Step 2 — Create (or reuse) a Dev Center
 Azure Portal → search **"Dev Centers"** → Create.
 - Name: `nexedge-devcenter` (or whatever you like)
 - Region: same as you'll deploy VMs to
 
-## ☐ Step 3 — Attach this repo as a Catalog
+##  Step 3 — Attach this repo as a Catalog
 Inside your Dev Center → **Catalogs** → Add.
 - Name: `smarthotel-catalog`
 - Git clone URI: your repo URL
 - Branch: `main`
 - Folder path: `/` (or `/Environments` if you nested it)
 
-## ☐ Step 4 — Create an Environment Type + attach a subscription
+##  Step 4 — Create an Environment Type + attach a subscription
 Dev Center → **Environment types** → Add → name it `sandbox`.
 Then on a **Project** (create one if you don't have one) → **Environment types**
 → add `sandbox` and point it at your subscription/resource group.
 
-## ☐ Step 5 — Deploy it
+##  Step 5 — Deploy it
 Go to the **Dev Center Developer Portal** (separate URL, not the main Azure
 Portal) → New Environment → pick `SmartHotel-OnPrem-Simulation` → fill in
 adminUsername / adminPassword / your IP → Create.
