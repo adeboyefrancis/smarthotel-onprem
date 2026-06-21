@@ -44,13 +44,13 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   location: location
   properties: {
     addressSpace: {
-      addressPrefixes: ['10.10.0.0/16']
+      addressPrefixes: ['10.0.0.0/16']
     }
     subnets: [
       {
         name: 'SmartHotel-Subnet'
         properties: {
-          addressPrefix: '10.10.1.0/24'
+          addressPrefix: '10.0.1.0/24'
           networkSecurityGroup: {
             id: nsg.id
           }

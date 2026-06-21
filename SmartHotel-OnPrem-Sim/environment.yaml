@@ -1,40 +1,34 @@
-name: SmartHotelOnPremSimulation
+name: SmartHotel-OnPrem-Simulation
 version: 1.0.0
-
 summary: Stage 1 — On-prem infra simulation (WAF + 2x Web + SQL)
-
 description: >
   Provisions 4 VMs on a single VNet to simulate the SmartHotelHost Hyper-V
   topology: UbuntuWAF, SmartHotelWeb1, SmartHotelWeb2, SmartHotelSQL1.
   Mirrors Stage 1 of the SmartHotel360 on-prem-to-Azure migration scenario.
-
-runner: Bicep
+runner: ARM
 templatePath: main.bicep
-
 parameters:
-
   - id: adminUsername
     name: Admin Username
-    description: Local administrator account for Windows VMs and sudo-enabled account for Linux VMs.
+    description: Local admin (Windows) / sudo user (Linux) for all 4 VMs
     type: string
     required: true
 
   - id: adminPassword
     name: Admin Password
-    description: Must be at least 12 characters and include uppercase, lowercase, digit, and symbol.
+    description: Must be 12+ chars with 3 of upper/lower/digit/symbol
     type: string
     required: true
     secret: true
 
   - id: allowedSourceIp
-    name: Allowed Source IP (CIDR)
-    description: Public IPv4 CIDR allowed to access RDP, SSH, and HTTP endpoints. Example- 86.123.45.67/32
+    name: Your Public IP (CIDR)
+    description: e.g. 86.123.45.67/32 — find yours at whatismyip.com. Locks RDP/SSH/HTTP to just you.
     type: string
     required: true
 
   - id: standardVmSize
     name: Web/WAF VM Size
-    description: VM size used for web and WAF tier.
     type: string
     default: Standard_B2s
     allowed:
@@ -44,7 +38,6 @@ parameters:
 
   - id: sqlVmSize
     name: SQL VM Size
-    description: VM size used for SQL Server tier.
     type: string
     default: Standard_B2ms
     allowed:
@@ -53,22 +46,20 @@ parameters:
       - Standard_D4s_v5
 
   - id: deployApps
-    name: Deploy application components
-    description: Installs IIS apps, SQL objects, and Nginx WAF configuration after infrastructure deployment.
+    name: Deploy Stage 2 Apps
+    description: Installs IIS sites, SQL database, and Nginx WAF config on top of the infra
     type: boolean
     default: true
 
   - id: catalogRawBaseUrl
-    name: Scripts Base URL
-    description: Base URL for deployment scripts. Only required if deployApps is enabled.
+    name: Catalog Scripts Base URL
+    description: Raw GitHub URL to this folder's /scripts directory, e.g. https://raw.githubusercontent.com/<you>/<repo>/main/SmartHotel-OnPrem-Sim/scripts
     type: string
     required: false
-    default: ""
 
   - id: sqlAppPassword
-    name: SQL Application Password
-    description: Password for SQL application login. Required only if deployApps is enabled.
+    name: SQL App Login Password
+    description: Password for the smarthotelapp SQL login used by the web tier — required if Deploy Stage 2 Apps is on
     type: string
     required: false
     secret: true
-    default: ""
